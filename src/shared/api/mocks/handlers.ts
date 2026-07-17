@@ -29,22 +29,29 @@ export const handlers = [
     let updateTodo: Todo | null = null;
 
     const updateTodos = todos.map((todo) => {
-        if (todo.id === id) {
-            updateTodo = { ...todo, ...body };
-            return updateTodo;
-        }
-        return todo;
+      if (todo.id === id) {
+        updateTodo = { ...todo, ...body };
+        return updateTodo;
+      }
+      return todo;
     });
 
     if (!updateTodo) {
-        return new HttpResponse(null, { 
-            status: 404,
-            statusText: "todo not found!" 
-        })
+      return new HttpResponse(null, {
+        status: 404,
+        statusText: "todo not found!",
+      });
     }
 
     updateStoredTodos(updateTodos);
 
     return HttpResponse.json(updateTodo);
-  })
+  }),
+  http.delete(`${API_URL}/todos/:id`, ({ params }) => {
+    const { id } = params;
+    const todos = getStoredTodos();
+    const filteredTodos = todos.filter((todo) => todo.id !== id);
+    updateStoredTodos(filteredTodos);
+    return new HttpResponse(null, { status: 200 });
+  }),
 ];
