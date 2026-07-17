@@ -1,0 +1,11 @@
+{
+  "todos": [
+    {
+      "text": "Приклад першого завдання",
+      "completed": false,
+      "createdAt": 1784278123604,
+      "id": "x0C9KIHY-cY"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
