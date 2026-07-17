@@ -22,4 +22,29 @@ export const handlers = [
     updateStoredTodos(todos);
     return HttpResponse.json(newTodo, { status: 201 });
   }),
+  http.patch(`${API_URL}/todos/:id`, async ({ request, params }) => {
+    const { id } = params;
+    const body = (await request.json()) as Partial<Todo>;
+    const todos = getStoredTodos();
+    let updateTodo: Todo | null = null;
+
+    const updateTodos = todos.map((todo) => {
+        if (todo.id === id) {
+            updateTodo = { ...todo, ...body };
+            return updateTodo;
+        }
+        return todo;
+    });
+
+    if (!updateTodo) {
+        return new HttpResponse(null, { 
+            status: 404,
+            statusText: "todo not found!" 
+        })
+    }
+
+    updateStoredTodos(updateTodos);
+
+    return HttpResponse.json(updateTodo);
+  })
 ];
